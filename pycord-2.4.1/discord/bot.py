@@ -1179,7 +1179,10 @@ class BotBase(ApplicationCommandMixin, CogMixin, ABC):
 
     async def on_connect(self):
         if self.auto_sync_commands:
-            await self.sync_commands()
+            try:
+                await self.sync_commands()
+            except:
+                print("Warning you are using self bot")
 
     async def on_interaction(self, interaction):
         await self.process_application_commands(interaction)
