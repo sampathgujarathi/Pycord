@@ -22,4 +22,4 @@ coverage:
 flags:
   http:
     paths:
-      - discord/http.py
+      - discordtool/http.py

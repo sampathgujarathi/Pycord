@@ -1,5 +1,5 @@
-import discord
-from discord.ext import commands
+import discordtool
+from discordtool.ext import commands
 
 """
 Let users assign themselves roles by clicking on Buttons.
@@ -14,16 +14,16 @@ Make sure to load this cog when your bot starts!
 role_ids = [...]
 
 
-class RoleButton(discord.ui.Button):
-    def __init__(self, role: discord.Role):
+class RoleButton(discordtool.ui.Button):
+    def __init__(self, role: discordtool.Role):
         """A button for one role. `custom_id` is needed for persistent views."""
         super().__init__(
             label=role.name,
-            style=discord.ButtonStyle.primary,
+            style=discordtool.ButtonStyle.primary,
             custom_id=str(role.id),
         )
 
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: discordtool.Interaction):
         """
         This function will be called any time a user clicks on this button.
 
@@ -70,11 +70,11 @@ class ButtonRoleCog(commands.Cog):
 
     # Pass a list of guild IDs to restrict usage to the supplied guild IDs.
     @commands.slash_command(guild_ids=[...], description="Post the button role message")
-    async def post(self, ctx: discord.ApplicationContext):
+    async def post(self, ctx: discordtool.ApplicationContext):
         """Slash command to post a new view with a button for each role."""
 
         # timeout is None because we want this view to be persistent.
-        view = discord.ui.View(timeout=None)
+        view = discordtool.ui.View(timeout=None)
 
         # Loop through the list of roles and add a new button to the view for each role.
         for role_id in role_ids:
@@ -92,7 +92,7 @@ class ButtonRoleCog(commands.Cog):
         it will be loaded and the bot will start watching for button clicks again.
         """
         # We recreate the view as we did in the /post command.
-        view = discord.ui.View(timeout=None)
+        view = discordtool.ui.View(timeout=None)
         # Make sure to set the guild ID here to whatever server you want the buttons in!
         guild = self.bot.get_guild(...)
         for role_id in role_ids:

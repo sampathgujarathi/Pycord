@@ -1,10 +1,10 @@
 from datetime import time, timezone
 
-import discord
-from discord.ext import tasks
+import discordtool
+from discordtool.ext import tasks
 
 
-class MyClient(discord.Client):
+class MyClient(discordtool.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

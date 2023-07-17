@@ -1,7 +1,7 @@
-import discord
-from discord.commands import option
+import discordtool
+from discordtool.commands import option
 
-bot = discord.Bot(debug_guilds=[...])
+bot = discordtool.Bot(debug_guilds=[...])
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
 
@@ -91,7 +91,7 @@ BASIC_ALLOWED = [
 ]  # This would normally be a list of discord user IDs for the purpose of this example
 
 
-async def color_searcher(ctx: discord.AutocompleteContext):
+async def color_searcher(ctx: discordtool.AutocompleteContext):
     """
     Returns a list of matching colors from the LOTS_OF_COLORS list.
 
@@ -106,12 +106,12 @@ async def color_searcher(ctx: discord.AutocompleteContext):
     ]
 
 
-async def get_colors(ctx: discord.AutocompleteContext):
+async def get_colors(ctx: discordtool.AutocompleteContext):
     """Returns a list of colors that begin with the characters entered so far."""
     return [color for color in COLORS if color.startswith(ctx.value.lower())]
 
 
-async def get_animals(ctx: discord.AutocompleteContext):
+async def get_animals(ctx: discordtool.AutocompleteContext):
     """Returns a list of animals that are (mostly) the color selected for the "color" option."""
     picked_color = ctx.options["color"]
     if picked_color == "red":
@@ -138,7 +138,7 @@ async def get_animals(ctx: discord.AutocompleteContext):
 @option("color", description="Pick a color!", autocomplete=get_colors)
 @option("animal", description="Pick an animal!", autocomplete=get_animals)
 async def autocomplete_example(
-    ctx: discord.ApplicationContext,
+    ctx: discordtool.ApplicationContext,
     color: str,
     animal: str,
 ):
@@ -163,19 +163,19 @@ async def autocomplete_example(
 @option(
     "color",
     description="Pick a color from this big list!",
-    autocomplete=discord.utils.basic_autocomplete(color_searcher),
+    autocomplete=discordtool.utils.basic_autocomplete(color_searcher),
     # Demonstrates passing a callback to discord.utils.basic_autocomplete
 )
 @option(
     "animal",
     description="Pick an animal from this small list",
-    autocomplete=discord.utils.basic_autocomplete(
+    autocomplete=discordtool.utils.basic_autocomplete(
         ["snail", "python", "cricket", "orca"]
     ),
     # Demonstrates passing a static iterable discord.utils.basic_autocomplete
 )
 async def autocomplete_basic_example(
-    ctx: discord.ApplicationContext,
+    ctx: discordtool.ApplicationContext,
     color: str,
     animal: str,
 ):

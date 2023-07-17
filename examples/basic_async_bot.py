@@ -1,11 +1,11 @@
 import asyncio
 
-import discord
-from discord.ext import commands
+import discordtool
+from discordtool.ext import commands
 
 bot = commands.Bot(
     command_prefix=commands.when_mentioned_or("!"),
-    intents=discord.Intents.default(),
+    intents=discordtool.Intents.default(),
 )
 
 
@@ -16,7 +16,7 @@ async def on_ready():
 
 
 @bot.slash_command(guild_ids=[...])  # Create a slash command.
-async def hello(ctx: discord.ApplicationContext):
+async def hello(ctx: discordtool.ApplicationContext):
     """Say hello to the bot"""  # The command description can be supplied as the docstring
     await ctx.respond(f"Hello {ctx.author.mention}!")
 

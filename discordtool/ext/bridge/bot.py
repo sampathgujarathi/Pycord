@@ -27,10 +27,10 @@ from __future__ import annotations
 from abc import ABC
 from collections.abc import Iterator
 
-from discord.commands import ApplicationContext
-from discord.errors import CheckFailure, DiscordException
-from discord.interactions import Interaction
-from discord.message import Message
+from discordtool.commands import ApplicationContext
+from discordtool.errors import CheckFailure, DiscordException
+from discordtool.interactions import Interaction
+from discordtool.message import Message
 
 from ..commands import AutoShardedBot as ExtAutoShardedBot
 from ..commands import Bot as ExtBot

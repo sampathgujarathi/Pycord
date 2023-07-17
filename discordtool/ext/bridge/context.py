@@ -27,10 +27,10 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Union, overload
 
-from discord.commands import ApplicationContext
-from discord.interactions import Interaction, InteractionMessage
-from discord.message import Message
-from discord.webhook import WebhookMessage
+from discordtool.commands import ApplicationContext
+from discordtool.interactions import Interaction, InteractionMessage
+from discordtool.message import Message
+from discordtool.webhook import WebhookMessage
 
 from ..commands import Context
 

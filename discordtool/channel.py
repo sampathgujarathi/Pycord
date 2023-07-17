@@ -28,7 +28,7 @@ from __future__ import annotations
 import datetime
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Mapping, TypeVar, overload
 
-import discord.abc
+import discordtool.abc
 
 from . import utils
 from .asset import Asset
@@ -179,7 +179,7 @@ class ForumTag(Hashable):
         return payload
 
 
-class _TextChannel(discord.abc.GuildChannel, Hashable):
+class _TextChannel(discordtool.abc.GuildChannel, Hashable):
     __slots__ = (
         "name",
         "id",
@@ -257,7 +257,7 @@ class _TextChannel(discord.abc.GuildChannel, Hashable):
     def _sorting_bucket(self) -> int:
         return ChannelType.text.value
 
-    @utils.copy_doc(discord.abc.GuildChannel.permissions_for)
+    @utils.copy_doc(discordtool.abc.GuildChannel.permissions_for)
     def permissions_for(self, obj: Member | Role, /) -> Permissions:
         base = super().permissions_for(obj)
 
@@ -316,7 +316,7 @@ class _TextChannel(discord.abc.GuildChannel, Hashable):
         """Edits the channel."""
         raise NotImplementedError
 
-    @utils.copy_doc(discord.abc.GuildChannel.clone)
+    @utils.copy_doc(discordtool.abc.GuildChannel.clone)
     async def clone(
         self, *, name: str | None = None, reason: str | None = None
     ) -> TextChannel:
@@ -452,7 +452,7 @@ class _TextChannel(discord.abc.GuildChannel, Hashable):
             deleted = await channel.purge(limit=100, check=is_me)
             await channel.send(f'Deleted {len(deleted)} message(s)')
         """
-        return await discord.abc._purge_messages_helper(
+        return await discordtool.abc._purge_messages_helper(
             self,
             limit=limit,
             check=check,
@@ -675,7 +675,7 @@ class _TextChannel(discord.abc.GuildChannel, Hashable):
         )
 
 
-class TextChannel(discord.abc.Messageable, _TextChannel):
+class TextChannel(discordtool.abc.Messageable, _TextChannel):
     """Represents a Discord text channel.
 
     .. container:: operations
@@ -1320,7 +1320,7 @@ class ForumChannel(_TextChannel):
         return ret
 
 
-class VocalGuildChannel(discord.abc.Connectable, discord.abc.GuildChannel, Hashable):
+class VocalGuildChannel(discordtool.abc.Connectable, discordtool.abc.GuildChannel, Hashable):
     __slots__ = (
         "name",
         "id",
@@ -1419,7 +1419,7 @@ class VocalGuildChannel(discord.abc.Connectable, discord.abc.GuildChannel, Hasha
             if value.channel and value.channel.id == self.id
         }
 
-    @utils.copy_doc(discord.abc.GuildChannel.permissions_for)
+    @utils.copy_doc(discordtool.abc.GuildChannel.permissions_for)
     def permissions_for(self, obj: Member | Role, /) -> Permissions:
         base = super().permissions_for(obj)
 
@@ -1432,7 +1432,7 @@ class VocalGuildChannel(discord.abc.Connectable, discord.abc.GuildChannel, Hasha
         return base
 
 
-class VoiceChannel(discord.abc.Messageable, VocalGuildChannel):
+class VoiceChannel(discordtool.abc.Messageable, VocalGuildChannel):
     """Represents a Discord guild voice channel.
 
     .. container:: operations
@@ -1683,7 +1683,7 @@ class VoiceChannel(discord.abc.Messageable, VocalGuildChannel):
             deleted = await channel.purge(limit=100, check=is_me)
             await channel.send(f'Deleted {len(deleted)} message(s)')
         """
-        return await discord.abc._purge_messages_helper(
+        return await discordtool.abc._purge_messages_helper(
             self,
             limit=limit,
             check=check,
@@ -1768,7 +1768,7 @@ class VoiceChannel(discord.abc.Messageable, VocalGuildChannel):
         """The channel's Discord type."""
         return ChannelType.voice
 
-    @utils.copy_doc(discord.abc.GuildChannel.clone)
+    @utils.copy_doc(discordtool.abc.GuildChannel.clone)
     async def clone(
         self, *, name: str | None = None, reason: str | None = None
     ) -> VoiceChannel:
@@ -1920,7 +1920,7 @@ class VoiceChannel(discord.abc.Messageable, VocalGuildChannel):
         )
 
 
-class StageChannel(discord.abc.Messageable, VocalGuildChannel):
+class StageChannel(discordtool.abc.Messageable, VocalGuildChannel):
     """Represents a Discord guild stage channel.
 
     .. versionadded:: 1.7
@@ -2209,7 +2209,7 @@ class StageChannel(discord.abc.Messageable, VocalGuildChannel):
             deleted = await channel.purge(limit=100, check=is_me)
             await channel.send(f'Deleted {len(deleted)} message(s)')
         """
-        return await discord.abc._purge_messages_helper(
+        return await discordtool.abc._purge_messages_helper(
             self,
             limit=limit,
             check=check,
@@ -2307,7 +2307,7 @@ class StageChannel(discord.abc.Messageable, VocalGuildChannel):
         """The channel's Discord type."""
         return ChannelType.stage_voice
 
-    @utils.copy_doc(discord.abc.GuildChannel.clone)
+    @utils.copy_doc(discordtool.abc.GuildChannel.clone)
     async def clone(
         self, *, name: str | None = None, reason: str | None = None
     ) -> StageChannel:
@@ -2484,7 +2484,7 @@ class StageChannel(discord.abc.Messageable, VocalGuildChannel):
             return self.__class__(state=self._state, guild=self.guild, data=payload)  # type: ignore
 
 
-class CategoryChannel(discord.abc.GuildChannel, Hashable):
+class CategoryChannel(discordtool.abc.GuildChannel, Hashable):
     """Represents a Discord channel category.
 
     These are useful to group channels to logical compartments.
@@ -2581,7 +2581,7 @@ class CategoryChannel(discord.abc.GuildChannel, Hashable):
         """Checks if the category is NSFW."""
         return self.nsfw
 
-    @utils.copy_doc(discord.abc.GuildChannel.clone)
+    @utils.copy_doc(discordtool.abc.GuildChannel.clone)
     async def clone(
         self, *, name: str | None = None, reason: str | None = None
     ) -> CategoryChannel:
@@ -2651,7 +2651,7 @@ class CategoryChannel(discord.abc.GuildChannel, Hashable):
             # the payload will always be the proper channel payload
             return self.__class__(state=self._state, guild=self.guild, data=payload)  # type: ignore
 
-    @utils.copy_doc(discord.abc.GuildChannel.move)
+    @utils.copy_doc(discordtool.abc.GuildChannel.move)
     async def move(self, **kwargs):
         kwargs.pop("category", None)
         await super().move(**kwargs)
@@ -2776,7 +2776,7 @@ class CategoryChannel(discord.abc.GuildChannel, Hashable):
 DMC = TypeVar("DMC", bound="DMChannel")
 
 
-class DMChannel(discord.abc.Messageable, Hashable):
+class DMChannel(discordtool.abc.Messageable, Hashable):
     """Represents a Discord direct message channel.
 
     .. container:: operations
@@ -2914,7 +2914,7 @@ class DMChannel(discord.abc.Messageable, Hashable):
         return PartialMessage(channel=self, id=message_id)
 
 
-class GroupChannel(discord.abc.Messageable, Hashable):
+class GroupChannel(discordtool.abc.Messageable, Hashable):
     """Represents a Discord group channel.
 
     .. container:: operations
@@ -3078,7 +3078,7 @@ class GroupChannel(discord.abc.Messageable, Hashable):
         await self._state.http.leave_group(self.id)
 
 
-class PartialMessageable(discord.abc.Messageable, Hashable):
+class PartialMessageable(discordtool.abc.Messageable, Hashable):
     """Represents a partial messageable to aid with working messageable channels when
     only a channel ID are present.
 

@@ -3,13 +3,13 @@
 
 import random
 
-import discord
-from discord.ext import commands
+import discordtool
+from discordtool.ext import commands
 
 
 bot = commands.Bot(
     command_prefix=commands.when_mentioned_or("!"),
-    intents=discord.Intents().all(),
+    intents=discordtool.Intents().all(),
 )
 
 

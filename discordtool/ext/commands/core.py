@@ -41,7 +41,7 @@ from typing import (
     overload,
 )
 
-import discord
+import discordtool
 
 from ...commands import (
     ApplicationCommand,
@@ -67,7 +67,7 @@ from .errors import *
 if TYPE_CHECKING:
     from typing_extensions import Concatenate, ParamSpec, TypeGuard
 
-    from discord.message import Message
+    from discordtool.message import Message
 
     from ._types import Check, Coro, CoroFunc, Error, Hook
 
@@ -102,7 +102,7 @@ __all__ = (
     "message_command",
 )
 
-MISSING: Any = discord.utils.MISSING
+MISSING: Any = discordtool.utils.MISSING
 
 T = TypeVar("T")
 CogT = TypeVar("CogT", bound="Cog")
@@ -136,7 +136,7 @@ def get_signature_parameters(
     signature = inspect.signature(function)
     params = {}
     cache: dict[str, Any] = {}
-    eval_annotation = discord.utils.evaluate_annotation
+    eval_annotation = discordtool.utils.evaluate_annotation
     for name, parameter in signature.parameters.items():
         annotation = parameter.annotation
         if annotation is parameter.empty:
@@ -756,7 +756,7 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
             try:
                 next(iterator)
             except StopIteration:
-                raise discord.ClientException(
+                raise discordtool.ClientException(
                     f'Callback for {self.name} command is missing "self" parameter.'
                 )
 
@@ -764,7 +764,7 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
         try:
             next(iterator)
         except StopIteration:
-            raise discord.ClientException(
+            raise discordtool.ClientException(
                 f'Callback for {self.name} command is missing "ctx" parameter.'
             )
 
@@ -1186,7 +1186,7 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
             if cog is not None:
                 local_check = Cog._get_overridden_method(cog.cog_check)
                 if local_check is not None:
-                    ret = await discord.utils.maybe_coroutine(local_check, ctx)
+                    ret = await discordtool.utils.maybe_coroutine(local_check, ctx)
                     if not ret:
                         return False
 
@@ -1195,7 +1195,7 @@ class Command(_BaseCommand, Generic[CogT, P, T]):
                 # since we have no checks, then we just return True.
                 return True
 
-            return await discord.utils.async_all(predicate(ctx) for predicate in predicates)  # type: ignore
+            return await discordtool.utils.async_all(predicate(ctx) for predicate in predicates)  # type: ignore
         finally:
             ctx.command = original
 
@@ -1961,9 +1961,9 @@ def has_role(item: int | str) -> Callable[[T], T]:
 
         # ctx.guild is None doesn't narrow ctx.author to Member
         if isinstance(item, int):
-            role = discord.utils.get(ctx.author.roles, id=item)  # type: ignore
+            role = discordtool.utils.get(ctx.author.roles, id=item)  # type: ignore
         else:
-            role = discord.utils.get(ctx.author.roles, name=item)  # type: ignore
+            role = discordtool.utils.get(ctx.author.roles, name=item)  # type: ignore
         if role is None:
             raise MissingRole(item)
         return True
@@ -2008,7 +2008,7 @@ def has_any_role(*items: int | str) -> Callable[[T], T]:
             raise NoPrivateMessage()
 
         # ctx.guild is None doesn't narrow ctx.author to Member
-        getter = functools.partial(discord.utils.get, ctx.author.roles)  # type: ignore
+        getter = functools.partial(discordtool.utils.get, ctx.author.roles)  # type: ignore
         if any(
             (
                 getter(id=item) is not None
@@ -2043,9 +2043,9 @@ def bot_has_role(item: int) -> Callable[[T], T]:
 
         me = ctx.me
         if isinstance(item, int):
-            role = discord.utils.get(me.roles, id=item)
+            role = discordtool.utils.get(me.roles, id=item)
         else:
-            role = discord.utils.get(me.roles, name=item)
+            role = discordtool.utils.get(me.roles, name=item)
         if role is None:
             raise BotMissingRole(item)
         return True
@@ -2072,7 +2072,7 @@ def bot_has_any_role(*items: int) -> Callable[[T], T]:
             raise NoPrivateMessage()
 
         me = ctx.me
-        getter = functools.partial(discord.utils.get, me.roles)
+        getter = functools.partial(discordtool.utils.get, me.roles)
         if any(
             (
                 getter(id=item) is not None
@@ -2119,7 +2119,7 @@ def has_permissions(**perms: bool) -> Callable[[T], T]:
 
     """
 
-    invalid = set(perms) - set(discord.Permissions.VALID_FLAGS)
+    invalid = set(perms) - set(discordtool.Permissions.VALID_FLAGS)
     if invalid:
         raise TypeError(f"Invalid permission(s): {', '.join(invalid)}")
 
@@ -2148,7 +2148,7 @@ def bot_has_permissions(**perms: bool) -> Callable[[T], T]:
     that is inherited from :exc:`.CheckFailure`.
     """
 
-    invalid = set(perms) - set(discord.Permissions.VALID_FLAGS)
+    invalid = set(perms) - set(discordtool.Permissions.VALID_FLAGS)
     if invalid:
         raise TypeError(f"Invalid permission(s): {', '.join(invalid)}")
 
@@ -2185,7 +2185,7 @@ def has_guild_permissions(**perms: bool) -> Callable[[T], T]:
     .. versionadded:: 1.3
     """
 
-    invalid = set(perms) - set(discord.Permissions.VALID_FLAGS)
+    invalid = set(perms) - set(discordtool.Permissions.VALID_FLAGS)
     if invalid:
         raise TypeError(f"Invalid permission(s): {', '.join(invalid)}")
 
@@ -2213,7 +2213,7 @@ def bot_has_guild_permissions(**perms: bool) -> Callable[[T], T]:
     .. versionadded:: 1.3
     """
 
-    invalid = set(perms) - set(discord.Permissions.VALID_FLAGS)
+    invalid = set(perms) - set(discordtool.Permissions.VALID_FLAGS)
     if invalid:
         raise TypeError(f"Invalid permission(s): {', '.join(invalid)}")
 
@@ -2303,7 +2303,7 @@ def is_nsfw() -> Callable[[T], T]:
     def pred(ctx: Context) -> bool:
         ch = ctx.channel
         if ctx.guild is None or (
-            isinstance(ch, (discord.TextChannel, discord.Thread)) and ch.is_nsfw()
+            isinstance(ch, (discordtool.TextChannel, discordtool.Thread)) and ch.is_nsfw()
         ):
             return True
         raise NSFWChannelRequired(ch)  # type: ignore

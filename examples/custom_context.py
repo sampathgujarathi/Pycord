@@ -2,8 +2,8 @@
 
 import random
 
-import discord
-from discord.ext import commands
+import discordtool
+from discordtool.ext import commands
 
 
 class MyContext(commands.Context):  # Custom context
@@ -16,7 +16,7 @@ class MyContext(commands.Context):  # Custom context
         try:
             # This will react to the command author's message.
             await self.message.add_reaction(emoji)
-        except discord.HTTPException:
+        except discordtool.HTTPException:
             # Sometimes errors occur during this, for example,
             # maybe you don't have permission to add reactions.
             # We don't mind, so we can just ignore them.
@@ -24,32 +24,32 @@ class MyContext(commands.Context):  # Custom context
 
 
 # You can subclass discord.ApplicationContext to create custom application context if needed
-class MyApplicationContext(discord.ApplicationContext):  # Custom application context
+class MyApplicationContext(discordtool.ApplicationContext):  # Custom application context
     async def success(self, message: str):
         try:  # Respond with a green embed with a title of "Success"
-            embed = discord.Embed(
-                title="Success", description=message, colour=discord.Colour.green()
+            embed = discordtool.Embed(
+                title="Success", description=message, colour=discordtool.Colour.green()
             )
             await self.respond(embeds=[embed])
-        except discord.HTTPException:  # Ignore exceptions
+        except discordtool.HTTPException:  # Ignore exceptions
             pass
 
 
 class MyBot(commands.Bot):
-    async def get_context(self, message: discord.Message, *, cls=MyContext):
+    async def get_context(self, message: discordtool.Message, *, cls=MyContext):
         # When you override this method, you pass your new Context
         # subclass to the super() method, which tells the bot to
         # use the new MyContext class.
         return await super().get_context(message, cls=cls)
 
     async def get_application_context(
-        self, interaction: discord.Interaction, cls=MyApplicationContext
+        self, interaction: discordtool.Interaction, cls=MyApplicationContext
     ):
         # The same method for custom application context.
         return await super().get_application_context(interaction, cls=cls)
 
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.message_content = True
 
 bot = MyBot(

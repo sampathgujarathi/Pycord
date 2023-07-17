@@ -35,9 +35,9 @@ from typing import Any, Awaitable, Callable, Generic, TypeVar, cast
 
 import aiohttp
 
-import discord
-from discord.backoff import ExponentialBackoff
-from discord.utils import MISSING
+import discordtool
+from discordtool.backoff import ExponentialBackoff
+from discordtool.utils import MISSING
 
 __all__ = ("loop",)
 
@@ -56,12 +56,12 @@ class SleepHandle:
     ) -> None:
         self.loop = loop
         self.future = future = loop.create_future()
-        relative_delta = discord.utils.compute_timedelta(dt)
+        relative_delta = discordtool.utils.compute_timedelta(dt)
         self.handle = loop.call_later(relative_delta, future.set_result, True)
 
     def recalculate(self, dt: datetime.datetime) -> None:
         self.handle.cancel()
-        relative_delta = discord.utils.compute_timedelta(dt)
+        relative_delta = discordtool.utils.compute_timedelta(dt)
         self.handle = self.loop.call_later(relative_delta, self.future.set_result, True)
 
     def wait(self) -> asyncio.Future[Any]:
@@ -102,8 +102,8 @@ class Loop(Generic[LF]):
         self._injected = None
         self._valid_exception = (
             OSError,
-            discord.GatewayNotFound,
-            discord.ConnectionClosed,
+            discordtool.GatewayNotFound,
+            discordtool.ConnectionClosed,
             aiohttp.ClientError,
             asyncio.TimeoutError,
         )

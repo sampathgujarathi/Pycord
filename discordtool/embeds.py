@@ -44,8 +44,8 @@ __all__ = (
 E = TypeVar("E", bound="Embed")
 
 if TYPE_CHECKING:
-    from discord.types.embed import Embed as EmbedData
-    from discord.types.embed import EmbedType
+    from discordtool.types.embed import Embed as EmbedData
+    from discordtool.types.embed import EmbedType
 
 
 class EmbedAuthor:

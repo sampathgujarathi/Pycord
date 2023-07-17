@@ -1,24 +1,24 @@
-import discord
+import discordtool
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.members = True  # < This may give you `read-only` warning, just ignore it.
 # This intent requires "Server Members Intent" to be enabled at https://discord.com/developers
 
 
-bot = discord.Bot(intents=intents)
+bot = discordtool.Bot(intents=intents)
 
 role_message_id = (
     0  # ID of the message that can be reacted to for adding/removing a role.
 )
 
 emoji_to_role = {
-    discord.PartialEmoji(
+    discordtool.PartialEmoji(
         name="🔴"
     ): 0,  # ID of the role associated with unicode emoji '🔴'.
-    discord.PartialEmoji(
+    discordtool.PartialEmoji(
         name="🟡"
     ): 0,  # ID of the role associated with unicode emoji '🟡'.
-    discord.PartialEmoji(
+    discordtool.PartialEmoji(
         name="green", id=0
     ): 0,  # ID of the role associated with a partial emoji's ID.
 }
@@ -30,7 +30,7 @@ async def on_ready():
 
 
 @bot.event
-async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
+async def on_raw_reaction_add(payload: discordtool.RawReactionActionEvent):
     """Gives a role based on a reaction emoji."""
     # Make sure that the message the user is reacting to is the one we care about.
     if payload.message_id != role_message_id:
@@ -55,13 +55,13 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
     try:
         # Finally, add the role.
         await payload.member.add_roles(role)
-    except discord.HTTPException:
+    except discordtool.HTTPException:
         # If we want to do something in case of errors we'd do it here.
         pass
 
 
 @bot.event
-async def on_raw_reaction_remove(payload: discord.RawReactionActionEvent):
+async def on_raw_reaction_remove(payload: discordtool.RawReactionActionEvent):
     """Removes a role based on a reaction emoji."""
     # Make sure that the message the user is reacting to is the one we care about.
     if payload.message_id != role_message_id:
@@ -93,7 +93,7 @@ async def on_raw_reaction_remove(payload: discord.RawReactionActionEvent):
     try:
         # Finally, remove the role.
         await member.remove_roles(role)
-    except discord.HTTPException:
+    except discordtool.HTTPException:
         # If we want to do something in case of errors we'd do it here.
         pass
 

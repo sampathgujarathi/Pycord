@@ -2,10 +2,10 @@
 
 import asyncio
 
-import discord
-from discord.ext import bridge, commands
+import discordtool
+from discordtool.ext import bridge, commands
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.message_content = True
 
 bot = bridge.Bot(
@@ -19,18 +19,18 @@ async def ping(ctx: bridge.BridgeContext):
 
 
 @bot.bridge_command()
-@discord.option("value", choices=[1, 2, 3])
+@discordtool.option("value", choices=[1, 2, 3])
 async def choose(ctx: bridge.BridgeContext, value: int):
     await ctx.respond(f"You chose: {value}!")
 
 
 @bot.bridge_command()
-async def welcome(ctx: bridge.BridgeContext, member: discord.Member):
+async def welcome(ctx: bridge.BridgeContext, member: discordtool.Member):
     await ctx.respond(f"Welcome {member.mention}!")
 
 
 @bot.bridge_command()
-@discord.option("seconds", choices=range(1, 11))
+@discordtool.option("seconds", choices=range(1, 11))
 async def wait(ctx: bridge.BridgeContext, seconds: int = 5):
     await ctx.defer()
     await asyncio.sleep(seconds)
@@ -46,7 +46,7 @@ async def specialcmd(ctx: bridge.BridgeContext):
 
 
 @specialcmd.command()
-async def file(ctx: bridge.BridgeContext, attachment: discord.Attachment):
+async def file(ctx: bridge.BridgeContext, attachment: discordtool.Attachment):
     await ctx.respond(f"The name of that file is `{attachment.filename}`")
 
     url_msg = f"psss, here's its url: {attachment.url}"

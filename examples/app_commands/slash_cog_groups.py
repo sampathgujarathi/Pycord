@@ -1,17 +1,17 @@
 # This example requires the 'members' privileged intent to use the Member converter.
 
-import discord
-from discord.commands import SlashCommandGroup
-from discord.ext import commands
+import discordtool
+from discordtool.commands import SlashCommandGroup
+from discordtool.ext import commands
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.members = True
 
-bot = discord.Bot(debug_guilds=[...], intents=intents, owner_id=...)  # Main file
+bot = discordtool.Bot(debug_guilds=[...], intents=intents, owner_id=...)  # Main file
 
 
 class Example(commands.Cog):
-    def __init__(self, bot_: discord.Bot):
+    def __init__(self, bot_: discordtool.Bot):
         self.bot = bot_
 
     greetings = SlashCommandGroup("greetings", "Various greeting from cogs!")
@@ -29,22 +29,22 @@ class Example(commands.Cog):
     )
 
     @greetings.command()
-    async def hello(self, ctx: discord.ApplicationContext):
+    async def hello(self, ctx: discordtool.ApplicationContext):
         await ctx.respond("Hello, this is a slash subcommand from a cog!")
 
     @international_greetings.command()
-    async def aloha(self, ctx: discord.ApplicationContext):
+    async def aloha(self, ctx: discordtool.ApplicationContext):
         await ctx.respond("Aloha, a Hawaiian greeting")
 
     @secret_greetings.command()
     async def secret_handshake(
-        self, ctx: discord.ApplicationContext, member: discord.Member
+        self, ctx: discordtool.ApplicationContext, member: discordtool.Member
     ):
         await ctx.respond(f"{member.mention} secret handshakes you")
 
     @commands.Cog.listener()
     async def on_application_command_error(
-        self, ctx: discord.ApplicationContext, error: discord.DiscordException
+        self, ctx: discordtool.ApplicationContext, error: discordtool.DiscordException
     ):
         if isinstance(error, commands.NotOwner):
             await ctx.respond("You can't use that command!")

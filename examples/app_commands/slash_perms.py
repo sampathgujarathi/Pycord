@@ -1,22 +1,22 @@
-import discord
+import discordtool
 
-bot = discord.Bot(debug_guilds=[...])
+bot = discordtool.Bot(debug_guilds=[...])
 
 
 @bot.slash_command()
-@discord.default_permissions(
+@discordtool.default_permissions(
     administrator=True,
 )  # Only members with this permission can use this command.
-async def admin_only(ctx: discord.ApplicationContext):
+async def admin_only(ctx: discordtool.ApplicationContext):
     await ctx.respond(f"Hello {ctx.author}, you are an administrator.")
 
 
 @bot.slash_command()
-@discord.default_permissions(
+@discordtool.default_permissions(
     manage_messages=True,
     ban_members=True,
 )  # You can supply multiple permissions that are required to use the command.
-async def staff_only(ctx: discord.ApplicationContext):
+async def staff_only(ctx: discordtool.ApplicationContext):
     await ctx.respond(f"Hello {ctx.author}, you can manage messages and ban members.")
 
 

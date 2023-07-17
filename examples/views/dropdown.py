@@ -1,23 +1,23 @@
-import discord
+import discordtool
 
 
 # Defines a custom Select containing colour options
 # that the user can choose. The callback function
 # of this class is called when the user changes their choice.
-class Dropdown(discord.ui.Select):
-    def __init__(self, bot_: discord.Bot):
+class Dropdown(discordtool.ui.Select):
+    def __init__(self, bot_: discordtool.Bot):
         # For example, you can use self.bot to retrieve a user or perform other functions in the callback.
         # Alternatively you can use Interaction.client, so you don't need to pass the bot instance.
         self.bot = bot_
         # Set the options that will be presented inside the dropdown:
         options = [
-            discord.SelectOption(
+            discordtool.SelectOption(
                 label="Red", description="Your favourite colour is red", emoji="🟥"
             ),
-            discord.SelectOption(
+            discordtool.SelectOption(
                 label="Green", description="Your favourite colour is green", emoji="🟩"
             ),
-            discord.SelectOption(
+            discordtool.SelectOption(
                 label="Blue", description="Your favourite colour is blue", emoji="🟦"
             ),
         ]
@@ -32,7 +32,7 @@ class Dropdown(discord.ui.Select):
             options=options,
         )
 
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: discordtool.Interaction):
         # Use the interaction object to send a response message containing
         # the user's favourite colour or choice. The self object refers to the
         # Select object, and the values attribute gets a list of the user's
@@ -43,8 +43,8 @@ class Dropdown(discord.ui.Select):
 
 
 # Defines a simple View that allows the user to use the Select menu.
-class DropdownView(discord.ui.View):
-    def __init__(self, bot_: discord.Bot):
+class DropdownView(discordtool.ui.View):
+    def __init__(self, bot_: discordtool.Bot):
         self.bot = bot_
         super().__init__()
 
@@ -55,11 +55,11 @@ class DropdownView(discord.ui.View):
         # super().__init__(Dropdown(self.bot))
 
 
-bot = discord.Bot(debug_guilds=[...])
+bot = discordtool.Bot(debug_guilds=[...])
 
 
 @bot.slash_command()
-async def colour(ctx: discord.ApplicationContext):
+async def colour(ctx: discordtool.ApplicationContext):
     """Sends a message with our dropdown that contains colour options."""
 
     # Create the view containing our dropdown

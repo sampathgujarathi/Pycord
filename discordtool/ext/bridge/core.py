@@ -28,8 +28,8 @@ import inspect
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Callable
 
-import discord.commands.options
-from discord import (
+import discordtool.commands.options
+from discordtool import (
     ApplicationCommand,
     Attachment,
     Option,
@@ -623,5 +623,5 @@ class BridgeOption(Option, Converter):
             raise BadArgument() from exc
 
 
-discord.commands.options.Option = BridgeOption
-discord.Option = BridgeOption
+discordtool.commands.options.Option = BridgeOption
+discordtool.Option = BridgeOption

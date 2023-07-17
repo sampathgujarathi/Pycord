@@ -3,10 +3,10 @@
 
 from typing import Union
 
-import discord
-from discord.ext import commands
+import discordtool
+from discordtool.ext import commands
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.members = True
 intents.message_content = True
 
@@ -26,7 +26,7 @@ async def secret(ctx: commands.Context):
 
 
 def create_overwrites(
-    ctx: commands.Context, *objects: Union[discord.Role, discord.Member]
+    ctx: commands.Context, *objects: Union[discordtool.Role, discordtool.Member]
 ):
     """
     This is just a helper function that creates the overwrites for the
@@ -43,17 +43,17 @@ def create_overwrites(
     # A dict comprehension is being utilised here to set the same permission overwrites
     # for each `discord.Role` or `discord.Member`.
     overwrites = {
-        obj: discord.PermissionOverwrite(view_channel=True) for obj in objects
+        obj: discordtool.PermissionOverwrite(view_channel=True) for obj in objects
     }
 
     # Prevents the default role (@everyone) from viewing the channel
     # if it isn't already allowed to view the channel.
     overwrites.setdefault(
-        ctx.guild.default_role, discord.PermissionOverwrite(view_channel=False)
+        ctx.guild.default_role, discordtool.PermissionOverwrite(view_channel=False)
     )
 
     # Makes sure the client is always allowed to view the channel.
-    overwrites[ctx.guild.me] = discord.PermissionOverwrite(view_channel=True)
+    overwrites[ctx.guild.me] = discordtool.PermissionOverwrite(view_channel=True)
 
     return overwrites
 
@@ -65,7 +65,7 @@ def create_overwrites(
 async def text(
     ctx: commands.Context,
     name: str,
-    *objects: Union[discord.Role, discord.Member],
+    *objects: Union[discordtool.Role, discordtool.Member],
 ):
     """
     This makes a text channel with the passed name that
@@ -90,7 +90,7 @@ async def text(
 async def voice(
     ctx: commands.Context,
     name: str,
-    *objects: Union[discord.Role, discord.Member],
+    *objects: Union[discordtool.Role, discordtool.Member],
 ):
     """
     This does the same thing as the `text` subcommand
@@ -107,7 +107,7 @@ async def voice(
 @secret.command(name="emoji")
 @commands.guild_only()
 async def clone_emoji(
-    ctx: commands.Context, emoji: discord.PartialEmoji, *roles: discord.Role
+    ctx: commands.Context, emoji: discordtool.PartialEmoji, *roles: discordtool.Role
 ):
     """
     This clones a specified emoji that only

@@ -27,7 +27,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, TypeVar
 
-import discord.abc
+import discordtool.abc
 
 from .asset import Asset
 from .colour import Colour
@@ -459,7 +459,7 @@ class ClientUser(BaseUser):
         return ClientUser(state=self._state, data=data)
 
 
-class User(BaseUser, discord.abc.Messageable):
+class User(BaseUser, discordtool.abc.Messageable):
     """Represents a Discord user.
 
     .. container:: operations

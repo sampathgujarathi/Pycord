@@ -2,10 +2,10 @@ import io
 
 import pydub  # pip install pydub==0.25.1
 
-import discord
-from discord.sinks import MP3Sink
+import discordtool
+from discordtool.sinks import MP3Sink
 
-bot = discord.Bot()
+bot = discordtool.Bot()
 
 
 @bot.event
@@ -13,10 +13,10 @@ async def on_ready():
     print(f"Logged in as {bot.user}")
 
 
-async def finished_callback(sink: MP3Sink, channel: discord.TextChannel):
+async def finished_callback(sink: MP3Sink, channel: discordtool.TextChannel):
     mention_strs = []
     audio_segs: list[pydub.AudioSegment] = []
-    files: list[discord.File] = []
+    files: list[discordtool.File] = []
 
     longest = pydub.AudioSegment.empty()
 
@@ -33,7 +33,7 @@ async def finished_callback(sink: MP3Sink, channel: discord.TextChannel):
             audio_segs.append(seg)
 
         audio.file.seek(0)
-        files.append(discord.File(audio.file, filename=f"{user_id}.mp3"))
+        files.append(discordtool.File(audio.file, filename=f"{user_id}.mp3"))
 
     for seg in audio_segs:
         longest = longest.overlay(seg)
@@ -42,12 +42,12 @@ async def finished_callback(sink: MP3Sink, channel: discord.TextChannel):
         longest.export(f, format="mp3")
         await channel.send(
             f"Finished! Recorded audio for {', '.join(mention_strs)}.",
-            files=files + [discord.File(f, filename="recording.mp3")],
+            files=files + [discordtool.File(f, filename="recording.mp3")],
         )
 
 
 @bot.command()
-async def join(ctx: discord.ApplicationContext):
+async def join(ctx: discordtool.ApplicationContext):
     """Join the voice channel!"""
     voice = ctx.author.voice
 
@@ -60,14 +60,14 @@ async def join(ctx: discord.ApplicationContext):
 
 
 @bot.command()
-async def start(ctx: discord.ApplicationContext):
+async def start(ctx: discordtool.ApplicationContext):
     """Record the voice channel!"""
     voice = ctx.author.voice
 
     if not voice:
         return await ctx.respond("You're not in a vc right now")
 
-    vc: discord.VoiceClient = ctx.voice_client
+    vc: discordtool.VoiceClient = ctx.voice_client
 
     if not vc:
         return await ctx.respond(
@@ -85,9 +85,9 @@ async def start(ctx: discord.ApplicationContext):
 
 
 @bot.command()
-async def stop(ctx: discord.ApplicationContext):
+async def stop(ctx: discordtool.ApplicationContext):
     """Stop the recording"""
-    vc: discord.VoiceClient = ctx.voice_client
+    vc: discordtool.VoiceClient = ctx.voice_client
 
     if not vc:
         return await ctx.respond("There's no recording going on right now")
@@ -98,9 +98,9 @@ async def stop(ctx: discord.ApplicationContext):
 
 
 @bot.command()
-async def leave(ctx: discord.ApplicationContext):
+async def leave(ctx: discordtool.ApplicationContext):
     """Leave the voice channel!"""
-    vc: discord.VoiceClient = ctx.voice_client
+    vc: discordtool.VoiceClient = ctx.voice_client
 
     if not vc:
         return await ctx.respond("I'm not in a vc right now")

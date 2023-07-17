@@ -1,13 +1,13 @@
-import discord
+import discordtool
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.message_content = (
     True  # < This may give you `read-only` warning, just ignore it.
 )
 # This intent requires "Message Content Intent" to be enabled at https://discord.com/developers
 
 
-bot = discord.Bot(intents=intents)
+bot = discordtool.Bot(intents=intents)
 
 
 @bot.event
@@ -16,7 +16,7 @@ async def on_ready():
 
 
 @bot.event
-async def on_message(message: discord.Message):
+async def on_message(message: discordtool.Message):
     # Make sure we won't be replying to ourselves.
     if message.author.id == bot.user.id:
         return

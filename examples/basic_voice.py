@@ -4,8 +4,8 @@ import asyncio
 
 import youtube_dl
 
-import discord
-from discord.ext import commands
+import discordtool
+from discordtool.ext import commands
 
 # Suppress noise about console usage from errors
 youtube_dl.utils.bug_reports_message = lambda: ""
@@ -32,8 +32,8 @@ ffmpeg_options = {"options": "-vn"}
 ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
 
-class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source: discord.AudioSource, *, data: dict, volume: float = 0.5):
+class YTDLSource(discordtool.PCMVolumeTransformer):
+    def __init__(self, source: discordtool.AudioSource, *, data: dict, volume: float = 0.5):
         super().__init__(source, volume)
 
         self.data = data
@@ -53,7 +53,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             data = data["entries"][0]
 
         filename = data["url"] if stream else ytdl.prepare_filename(data)
-        return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
+        return cls(discordtool.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
 
 class Music(commands.Cog):
@@ -61,7 +61,7 @@ class Music(commands.Cog):
         self.bot = bot_
 
     @commands.command()
-    async def join(self, ctx: commands.Context, *, channel: discord.VoiceChannel):
+    async def join(self, ctx: commands.Context, *, channel: discordtool.VoiceChannel):
         """Joins a voice channel"""
 
         if ctx.voice_client is not None:
@@ -73,7 +73,7 @@ class Music(commands.Cog):
     async def play(self, ctx: commands.Context, *, query: str):
         """Plays a file from the local filesystem"""
 
-        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(query))
+        source = discordtool.PCMVolumeTransformer(discordtool.FFmpegPCMAudio(query))
         ctx.voice_client.play(
             source, after=lambda e: print(f"Player error: {e}") if e else None
         )
@@ -134,7 +134,7 @@ class Music(commands.Cog):
             ctx.voice_client.stop()
 
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(

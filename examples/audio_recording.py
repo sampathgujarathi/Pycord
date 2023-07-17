@@ -1,27 +1,27 @@
 from enum import Enum
 
-import discord
+import discordtool
 
-bot = discord.Bot(debug_guilds=[...])
+bot = discordtool.Bot(debug_guilds=[...])
 connections = {}
 
 
 class Sinks(Enum):
-    mp3 = discord.sinks.MP3Sink()
-    wav = discord.sinks.WaveSink()
-    pcm = discord.sinks.PCMSink()
-    ogg = discord.sinks.OGGSink()
-    mka = discord.sinks.MKASink()
-    mkv = discord.sinks.MKVSink()
-    mp4 = discord.sinks.MP4Sink()
-    m4a = discord.sinks.M4ASink()
+    mp3 = discordtool.sinks.MP3Sink()
+    wav = discordtool.sinks.WaveSink()
+    pcm = discordtool.sinks.PCMSink()
+    ogg = discordtool.sinks.OGGSink()
+    mka = discordtool.sinks.MKASink()
+    mkv = discordtool.sinks.MKVSink()
+    mp4 = discordtool.sinks.MP4Sink()
+    m4a = discordtool.sinks.M4ASink()
 
 
-async def finished_callback(sink, channel: discord.TextChannel, *args):
+async def finished_callback(sink, channel: discordtool.TextChannel, *args):
     recorded_users = [f"<@{user_id}>" for user_id, audio in sink.audio_data.items()]
     await sink.vc.disconnect()
     files = [
-        discord.File(audio.file, f"{user_id}.{sink.encoding}")
+        discordtool.File(audio.file, f"{user_id}.{sink.encoding}")
         for user_id, audio in sink.audio_data.items()
     ]
     await channel.send(
@@ -30,7 +30,7 @@ async def finished_callback(sink, channel: discord.TextChannel, *args):
 
 
 @bot.command()
-async def start(ctx: discord.ApplicationContext, sink: Sinks):
+async def start(ctx: discordtool.ApplicationContext, sink: Sinks):
     """Record your voice!"""
     voice = ctx.author.voice
 
@@ -50,7 +50,7 @@ async def start(ctx: discord.ApplicationContext, sink: Sinks):
 
 
 @bot.command()
-async def stop(ctx: discord.ApplicationContext):
+async def stop(ctx: discordtool.ApplicationContext):
     """Stop recording."""
     if ctx.guild.id in connections:
         vc = connections[ctx.guild.id]

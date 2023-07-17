@@ -6,11 +6,11 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py-cord"
+name = "discordtool"
 authors = [
     {name = "Pycord Development"}
 ]
-description = "A Python wrapper for the Discord API"
+description = "A Python wrapper for the discordtool API"
 readme = "README.rst"
 requires-python = ">=3.8"
 license = {text = "MIT"}
@@ -33,25 +33,19 @@ classifiers = [
 dynamic = ["version", "dependencies", "optional-dependencies"]
 
 [project.urls]
-Homepage = "https://pycord.dev"
-Changelog = "https://docs.pycord.dev/en/master/changelog.html"
-Source = "https://github.com/Pycord-Development/pycord"
-Documentation = "https://docs.pycord.dev"
-Tracker = "https://github.com/Pycord-Development/pycord/issues"
-Funding = "https://patreon.com/pycord"
 
 [tool.setuptools]
 packages = [
-    "discord",
-    "discord.types",
-    "discord.sinks",
-    "discord.ui",
-    "discord.webhook",
-    "discord.commands",
-    "discord.ext.commands",
-    "discord.ext.tasks",
-    "discord.ext.pages",
-    "discord.ext.bridge",
+    "discordtool",
+    "discordtool.types",
+    "discordtool.sinks",
+    "discordtool.ui",
+    "discordtool.webhook",
+    "discordtool.commands",
+    "discordtool.ext.commands",
+    "discordtool.ext.tasks",
+    "discordtool.ext.pages",
+    "discordtool.ext.bridge",
 ]
 
 [tool.setuptools.dynamic]

@@ -1,6 +1,6 @@
-import discord
+import discordtool
 
-bot = discord.Bot()
+bot = discordtool.Bot()
 
 allowed_content_types = [
     "image/jpeg",
@@ -15,9 +15,9 @@ allowed_content_types = [
 @bot.command(guild_ids=[...])
 async def add_private_emoji(
     ctx,
-    name: discord.Option(str),
-    image: discord.Option(discord.Attachment),
-    role: discord.Option(discord.Role),
+    name: discordtool.Option(str),
+    image: discordtool.Option(discordtool.Attachment),
+    role: discordtool.Option(discordtool.Role),
 ):
     if image.content_type not in allowed_content_types:
         return await ctx.respond("Invalid attachment type!", ephemeral=True)

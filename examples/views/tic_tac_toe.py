@@ -2,26 +2,26 @@
 
 from typing import List
 
-import discord
-from discord.ext import commands
+import discordtool
+from discordtool.ext import commands
 
 
 # Defines a custom button that contains the logic of the game.
 # The ['TicTacToe'] bit is for type hinting purposes to tell your IDE or linter
 # what the type of `self.view` is. It is not required.
-class TicTacToeButton(discord.ui.Button["TicTacToe"]):
+class TicTacToeButton(discordtool.ui.Button["TicTacToe"]):
     def __init__(self, x: int, y: int):
         # A label is required, but we don't need one so a zero-width space is used.
         # The row parameter tells the View which row to place the button under.
         # A View can only contain up to 5 rows -- each row can only have 5 buttons.
         # Since a Tic Tac Toe grid is 3x3 that means we have 3 rows and 3 columns.
-        super().__init__(style=discord.ButtonStyle.secondary, label="\u200b", row=y)
+        super().__init__(style=discordtool.ButtonStyle.secondary, label="\u200b", row=y)
         self.x = x
         self.y = y
 
     # This function is called whenever this particular button is pressed.
     # This is part of the "meat" of the game logic.
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: discordtool.Interaction):
         assert self.view is not None
         view: TicTacToe = self.view
         state = view.board[self.y][self.x]
@@ -29,13 +29,13 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
             return
 
         if view.current_player == view.X:
-            self.style = discord.ButtonStyle.danger
+            self.style = discordtool.ButtonStyle.danger
             self.label = "X"
             view.board[self.y][self.x] = view.X
             view.current_player = view.O
             content = "It is now O's turn"
         else:
-            self.style = discord.ButtonStyle.success
+            self.style = discordtool.ButtonStyle.success
             self.label = "O"
             view.board[self.y][self.x] = view.O
             view.current_player = view.X
@@ -60,7 +60,7 @@ class TicTacToeButton(discord.ui.Button["TicTacToe"]):
 
 
 # This is our actual board View.
-class TicTacToe(discord.ui.View):
+class TicTacToe(discordtool.ui.View):
     # This tells the IDE or linter that all our children will be TicTacToeButtons.
     # This is not required.
     children: List[TicTacToeButton]
@@ -122,7 +122,7 @@ class TicTacToe(discord.ui.View):
         return None
 
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=intents)

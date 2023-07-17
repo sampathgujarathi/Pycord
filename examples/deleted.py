@@ -1,13 +1,13 @@
-import discord
+import discordtool
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.message_content = (
     True  # < This may give you `read-only` warning, just ignore it.
 )
 # This intent requires "Message Content Intent" to be enabled at https://discord.com/developers
 
 
-bot = discord.Bot(intents=intents)
+bot = discordtool.Bot(intents=intents)
 
 
 @bot.event
@@ -16,7 +16,7 @@ async def on_ready():
 
 
 @bot.event
-async def on_message(message: discord.Message):
+async def on_message(message: discordtool.Message):
     if message.content.startswith("!deleteme"):
         msg = await message.channel.send("I will delete myself now...")
         await msg.delete()
@@ -26,7 +26,7 @@ async def on_message(message: discord.Message):
 
 
 @bot.event
-async def on_message_delete(message: discord.Message):
+async def on_message_delete(message: discordtool.Message):
     msg = f"{message.author} has deleted the message: {message.content}"
     await message.channel.send(msg)
 

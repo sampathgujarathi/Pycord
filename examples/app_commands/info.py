@@ -1,11 +1,11 @@
 # This example requires the 'members' privileged intent to use the Member converter.
 
-import discord
+import discordtool
 
-intents = discord.Intents.default()
+intents = discordtool.Intents.default()
 intents.members = True
 
-bot = discord.Bot(
+bot = discordtool.Bot(
     debug_guilds=[...],
     description="An example to showcase how to extract info about users.",
     intents=intents,
@@ -13,16 +13,16 @@ bot = discord.Bot(
 
 
 @bot.slash_command(name="userinfo", description="Gets info about a user.")
-async def info(ctx: discord.ApplicationContext, user: discord.Member = None):
+async def info(ctx: discordtool.ApplicationContext, user: discordtool.Member = None):
     user = (
         user or ctx.author
     )  # If no user is provided it'll use the author of the message
-    embed = discord.Embed(
+    embed = discordtool.Embed(
         fields=[
-            discord.EmbedField(name="ID", value=str(user.id), inline=False),  # User ID
-            discord.EmbedField(
+            discordtool.EmbedField(name="ID", value=str(user.id), inline=False),  # User ID
+            discordtool.EmbedField(
                 name="Created",
-                value=discord.utils.format_dt(user.created_at, "F"),
+                value=discordtool.utils.format_dt(user.created_at, "F"),
                 inline=False,
             ),  # When the user's account was created
         ],
@@ -33,12 +33,12 @@ async def info(ctx: discord.ApplicationContext, user: discord.Member = None):
     if user.colour.value:  # If user has a role with a color
         embed.colour = user.colour
 
-    if isinstance(user, discord.User):  # Checks if the user in the server
+    if isinstance(user, discordtool.User):  # Checks if the user in the server
         embed.set_footer(text="This user is not in this server.")
     else:  # We end up here if the user is a discord.Member object
         embed.add_field(
             name="Joined",
-            value=discord.utils.format_dt(user.joined_at, "F"),
+            value=discordtool.utils.format_dt(user.joined_at, "F"),
             inline=False,
         )  # When the user joined the server
 
